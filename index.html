@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 Federal Tax Summary — Hoyt | Centurion</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #0B2038;
+    --ocean: #306E9E;
+    --ocean-light: #4D95B5;
+    --deep-sea: #1F496D;
+    --gold: #CAA977;
+    --gold-dim: rgba(202,169,119,0.12);
+    --silver: #E5E6E7;
+    --gray: #848484;
+    --white: #FFFFFF;
+    --surface: #0e2844;
+    --border: #1a3a5c;
+    --text-secondary: #a8bfd4;
+    --text-muted: #536f8a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--midnight);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 80% 0%, rgba(48,110,158,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 10% 90%, rgba(31,73,109,0.25) 0%, transparent 50%);
+  }
+
+  .topbar {
+    background: linear-gradient(135deg, var(--deep-sea) 0%, var(--midnight) 100%);
+    border-bottom: 1px solid rgba(202,169,119,0.3);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand { display: flex; align-items: center; gap: 14px; }
+
+  .brand-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .topbar-right {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .wrapper { max-width: 820px; margin: 0 auto; padding: 40px 32px 56px; }
+
+  header { margin-bottom: 36px; }
+
+  .header-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  header .sub {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+
+  .gold-rule { width: 48px; height: 2px; background: var(--gold); margin: 12px 0 0; }
+
+  .col-headers {
+    display: grid;
+    grid-template-columns: 1fr 120px 120px 110px;
+    padding: 8px 18px 8px 44px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 6px;
+  }
+  .col-headers span:not(:first-child) { text-align: right; }
+
+  .section { margin-bottom: 5px; }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 1fr 120px 120px 110px;
+    align-items: center;
+    padding: 12px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ocean);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s, border-left-color 0.18s;
+    user-select: none;
+  }
+
+  .section-header:hover,
+  .section-header.open {
+    background: var(--gold-dim);
+    border-color: var(--gold);
+    border-left-color: var(--gold);
+  }
+
+  .section-header.open { border-radius: 4px 4px 0 0; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .chevron {
+    width: 13px; height: 13px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+  .open .chevron { transform: rotate(90deg); }
+
+  .section-total {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--white);
+    letter-spacing: 0.03em;
+  }
+  .section-total.neg { color: #e07070; }
+  .section-total.muted { color: var(--text-muted); }
+
+  .diff-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    text-align: right;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .pos { color: #6bbf8a; }
+  .neg { color: #e07070; }
+  .zer { color: var(--text-muted); }
+
+  .rows-container {
+    border: 1px solid var(--gold);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    display: none;
+    background: rgba(11,32,56,0.6);
+  }
+  .rows-container.open { display: block; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 120px 120px 110px;
+    align-items: center;
+    padding: 9px 18px 9px 44px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.12s;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: rgba(202,169,119,0.05); }
+
+  .row-label { font-size: 13px; color: var(--text-secondary); font-weight: 300; }
+
+  .row-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .row-val.neg { color: #e07070; }
+  .row-val.muted { color: var(--text-muted); }
+
+  .row.hl { background: rgba(202,169,119,0.07); border-top: 1px solid rgba(202,169,119,0.2); }
+  .row.hl .row-label { color: var(--white); font-weight: 500; }
+  .row.hl .row-val { color: var(--gold); font-weight: 700; }
+
+  .row.hl-red { background: rgba(224,112,112,0.07); border-top: 1px solid rgba(224,112,112,0.2); }
+  .row.hl-red .row-label { color: #e07070; font-weight: 500; }
+
+  /* Summary cards */
+  .summary { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .summary-card.owed::before { background: #e07070; }
+  .summary-card.rate::before { background: var(--ocean-light); }
+  .summary-card.est::before  { background: var(--gold); }
+
+  .s-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .s-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .summary-card.owed .s-val { color: #e07070; }
+  .summary-card.rate .s-val { color: var(--ocean-light); }
+  .summary-card.est  .s-val { color: var(--gold); }
+  .s-sub { margin-top: 4px; font-size: 11px; color: var(--text-muted); font-weight: 300; }
+
+  /* Footer */
+  footer {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-brand { display: flex; align-items: center; gap: 10px; }
+  .footer-brand .brand-name { font-size: 13px; letter-spacing: 0.15em; }
+  footer p { font-size: 11px; color: var(--text-muted); font-weight: 300; }
+
+  /* ── WHY YOU OWE ── */
+  .why-section {
+    margin-top: 44px;
+    padding: 32px 36px 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold);
+    border-radius: 6px;
+  }
+
+  .why-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .why-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .why-intro {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 640px;
+    margin-bottom: 32px;
+  }
+
+  .why-intro strong { color: var(--white); font-weight: 600; }
+
+  /* Gap visual */
+  .gap-visual {
+    display: grid;
+    grid-template-columns: 1fr 100px 1fr;
+    gap: 0 20px;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .gap-col-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .gap-bar-wrap { display: flex; flex-direction: column; gap: 6px; }
+
+  .gap-bar {
+    border-radius: 4px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .income-bar {
+    background: linear-gradient(135deg, rgba(48,110,158,0.35), rgba(77,149,181,0.2));
+    border: 1px solid rgba(77,149,181,0.4);
+  }
+
+  .payments-bar {
+    background: linear-gradient(135deg, rgba(107,191,138,0.2), rgba(107,191,138,0.1));
+    border: 1px solid rgba(107,191,138,0.35);
+    flex: 0 0 auto;
+  }
+
+  .shortfall-bar {
+    background: linear-gradient(135deg, rgba(224,112,112,0.22), rgba(224,112,112,0.1));
+    border: 1px solid rgba(224,112,112,0.4);
+    flex: 0 0 auto;
+  }
+
+  .gap-bar-amount {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .income-bar .gap-bar-amount   { color: var(--ocean-light); }
+  .payments-bar .gap-bar-amount { color: #6bbf8a; }
+  .shortfall-bar .gap-bar-amount{ color: #e07070; }
+
+  .gap-bar-tag {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 300;
+  }
+
+  /* Middle column */
+  .gap-middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gap-rate-box {
+    background: var(--gold-dim);
+    border: 1px solid rgba(202,169,119,0.3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+
+  .gap-rate-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  .gap-rate-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .gap-arrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .gap-result-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .gap-result-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #e07070;
+    text-align: center;
+  }
+
+  /* Explainer tiles */
+  .why-tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .why-tile {
+    background: rgba(11,32,56,0.7);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  .why-tile.highlight-tile {
+    border-color: rgba(202,169,119,0.35);
+    background: var(--gold-dim);
+  }
+
+  .why-tile-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .why-tile-head {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .why-tile-body {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .why-tile-body strong { color: var(--gold); font-weight: 600; }
+
+  /* ── END WHY YOU OWE ── */
+
+  .section-group-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 16px 0 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg width="36" height="36" viewBox="0 0 80 90" fill="none">
+      <path d="M40 4L8 18V46C8 63 22 78 40 86C58 78 72 63 72 46V18L40 4Z" stroke="#CAA977" stroke-width="3.5" fill="none"/>
+      <path d="M40 14L16 25V46C16 59 26 71 40 78C54 71 64 59 64 46V25L40 14Z" stroke="#CAA977" stroke-width="2.5" fill="none" opacity="0.6"/>
+      <path d="M40 24L24 32V46C24 55 31 64 40 70C49 64 56 55 56 46V32L40 24Z" stroke="#CAA977" stroke-width="2" fill="none" opacity="0.35"/>
+      <path d="M29 40 Q29 32 40 32 Q51 32 51 40 L51 52 Q51 55 48 55 L45 55 L45 48 Q45 44 40 44 Q35 44 35 48 L35 55 L32 55 Q29 55 29 52 Z" fill="#CAA977" opacity="0.9"/>
+    </svg>
+    <span class="brand-name">Centurion</span>
+  </div>
+  <div class="topbar-right">
+    2025 Federal Income Tax Summary &mdash; Estimates Version<br>
+    Confidential Client Document
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <header>
+    <div class="header-eyebrow">Federal Income Tax Summary &middot; Tax Year 2025</div>
+    <h1>Christopher Hoyt &amp; Celeste P. Luzadder</h1>
+    <div class="sub">Year-over-Year Comparison &mdash; 2025 vs. 2024 &nbsp;&middot;&nbsp; For Estimates Planning</div>
+    <div class="gold-rule"></div>
+  </header>
+
+  <div class="col-headers">
+    <span>Line Item</span>
+    <span>2025</span>
+    <span>2024</span>
+    <span>Change</span>
+  </div>
+
+  <!-- INCOME -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Income
+      </div>
+      <div class="section-total">$1,718,371</div>
+      <div class="section-total">$1,299,752</div>
+      <div class="diff-badge pos">+$418,619</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Wages, salaries, tips</span><span class="row-val">$946,010</span><span class="row-val">$791,737</span><span class="diff-badge pos">+$154,273</span></div>
+      <div class="row"><span class="row-label">Interest income</span><span class="row-val">$492</span><span class="row-val">$993</span><span class="diff-badge neg">−$501</span></div>
+      <div class="row"><span class="row-label">Dividend income</span><span class="row-val">$12,225</span><span class="row-val">$11,521</span><span class="diff-badge pos">+$704</span></div>
+      <div class="row"><span class="row-label">Taxable pensions</span><span class="row-val">$4,856</span><span class="row-val muted">—</span><span class="diff-badge pos">+$4,856</span></div>
+      <div class="row"><span class="row-label">Business income</span><span class="row-val">$2,500</span><span class="row-val neg">−$22,500</span><span class="diff-badge pos">+$25,000</span></div>
+      <div class="row"><span class="row-label">Capital gain / (loss)</span><span class="row-val neg">−$3,000</span><span class="row-val">$63,503</span><span class="diff-badge neg">−$66,503</span></div>
+      <div class="row"><span class="row-label">Rent / royalty / partnership / S-Corp / trust</span><span class="row-val">$755,288</span><span class="row-val">$454,498</span><span class="diff-badge pos">+$300,790</span></div>
+      <div class="row"><span class="row-label">Other income</span><span class="row-val muted">—</span><span class="row-val">$431,998</span><span class="diff-badge neg">−$431,998</span></div>
+    </div>
+  </div>
+
+  <!-- ADJUSTMENTS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Adjustments to Income
+      </div>
+      <div class="section-total">$177</div>
+      <div class="section-total muted">—</div>
+      <div class="diff-badge pos">+$177</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Deductible part of self-employment tax</span><span class="row-val">$177</span><span class="row-val muted">—</span><span class="diff-badge pos">+$177</span></div>
+      <div class="row hl"><span class="row-label">Adjusted Gross Income</span><span class="row-val">$1,718,194</span><span class="row-val muted">—</span><span class="diff-badge pos">+$1,718,194</span></div>
+    </div>
+  </div>
+
+  <!-- ITEMIZED DEDUCTIONS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Itemized Deductions
+      </div>
+      <div class="section-total">$44,571</div>
+      <div class="section-total">$45,733</div>
+      <div class="diff-badge neg">−$1,162</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Taxes</span><span class="row-val">$9,880</span><span class="row-val">$10,000</span><span class="diff-badge neg">−$120</span></div>
+      <div class="row"><span class="row-label">Interest</span><span class="row-val">$25,886</span><span class="row-val">$30,733</span><span class="diff-badge neg">−$4,847</span></div>
+      <div class="row"><span class="row-label">Contributions</span><span class="row-val">$8,805</span><span class="row-val">$5,000</span><span class="diff-badge pos">+$3,805</span></div>
+    </div>
+  </div>
+
+  <!-- TAX COMPUTATION -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Tax Computation
+      </div>
+      <div class="section-total neg">$507,099</div>
+      <div class="section-total neg">$344,810</div>
+      <div class="diff-badge neg">+$162,289</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Standard deduction</span><span class="row-val">$31,500</span><span class="row-val muted">—</span><span class="diff-badge pos">+$31,500</span></div>
+      <div class="row"><span class="row-label">Larger of itemized or standard deduction</span><span class="row-val">$44,571</span><span class="row-val">$45,733</span><span class="diff-badge neg">−$1,162</span></div>
+      <div class="row"><span class="row-label">Qualified business income deduction</span><span class="row-val">$95,240</span><span class="row-val">$90,954</span><span class="diff-badge pos">+$4,286</span></div>
+      <div class="row"><span class="row-label">Taxable income</span><span class="row-val">$1,578,383</span><span class="row-val">$1,163,065</span><span class="diff-badge neg">+$415,318</span></div>
+      <div class="row hl"><span class="row-label">Tax before credits</span><span class="row-val neg">$507,099</span><span class="row-val neg">$344,810</span><span class="diff-badge neg">+$162,289</span></div>
+    </div>
+  </div>
+
+  <!-- CREDITS & OTHER TAXES -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Credits &amp; Other Taxes
+      </div>
+      <div class="section-total neg">$514,595</div>
+      <div class="section-total neg">$352,885</div>
+      <div class="diff-badge neg">+$161,710</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Foreign tax credit</span><span class="row-val">$2</span><span class="row-val">$167</span><span class="diff-badge neg">−$165</span></div>
+      <div class="row"><span class="row-label">Tax after credits</span><span class="row-val">$507,097</span><span class="row-val muted">—</span><span class="diff-badge zer">—</span></div>
+      <div class="row"><span class="row-label">Self-employment tax</span><span class="row-val">$353</span><span class="row-val muted">—</span><span class="diff-badge neg">+$353</span></div>
+      <div class="row"><span class="row-label">Other taxes</span><span class="row-val">$7,145</span><span class="row-val">$8,242</span><span class="diff-badge pos">−$1,097</span></div>
+      <div class="row hl"><span class="row-label">Total Tax</span><span class="row-val neg">$514,595</span><span class="row-val neg">$352,885</span><span class="diff-badge neg">+$161,710</span></div>
+    </div>
+  </div>
+
+  <!-- PAYMENTS -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Payments &amp; Withholding
+      </div>
+      <div class="section-total">$409,142</div>
+      <div class="section-total">$372,619</div>
+      <div class="diff-badge pos">+$36,523</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Federal income tax withheld</span><span class="row-val">$204,133</span><span class="row-val">$173,443</span><span class="diff-badge pos">+$30,690</span></div>
+      <div class="row"><span class="row-label">Estimated tax payments</span><span class="row-val">$205,009</span><span class="row-val">$199,176</span><span class="diff-badge pos">+$5,833</span></div>
+    </div>
+  </div>
+
+  <!-- BALANCE DUE -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)" style="border-left-color:#e07070; background:rgba(224,112,112,0.07);">
+      <div class="section-title" style="color:#e07070;">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="#e07070" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Balance Due
+      </div>
+      <div class="section-total neg">$105,498 owed</div>
+      <div class="section-total" style="color:#6bbf8a;">$19,734 refund</div>
+      <div class="diff-badge neg">swing</div>
+    </div>
+    <div class="rows-container" style="border-color:#e07070;">
+      <div class="row"><span class="row-label">Amount overpaid</span><span class="row-val muted">—</span><span class="row-val">$19,734</span><span class="diff-badge neg">−$19,734</span></div>
+      <div class="row"><span class="row-label">Applied to next year's estimated tax</span><span class="row-val muted">—</span><span class="row-val">$19,009</span><span class="diff-badge zer">—</span></div>
+      <div class="row"><span class="row-label">Underpayment penalty</span><span class="row-val">$45</span><span class="row-val">$725</span><span class="diff-badge pos">−$680</span></div>
+      <div class="row hl-red"><span class="row-label">Amount You Owe</span><span class="row-val neg" style="font-size:16px;">$105,498</span><span class="row-val muted">—</span><span class="diff-badge neg">new</span></div>
+    </div>
+  </div>
+
+  <!-- TAX RATES -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <div class="section-title">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,3 11,8 5,13"/></svg>
+        Tax Rates
+      </div>
+      <div class="section-total" style="color:var(--ocean-light);">32.6%</div>
+      <div class="section-total" style="color:var(--ocean-light);">30.0%</div>
+      <div class="diff-badge neg">+2.6 pts</div>
+    </div>
+    <div class="rows-container">
+      <div class="row"><span class="row-label">Ordinary income tax bracket</span><span class="row-val">37.0%</span><span class="row-val">37.0%</span><span class="diff-badge zer">—</span></div>
+      <div class="row hl"><span class="row-label">Effective tax rate</span><span class="row-val">32.6%</span><span class="row-val">30.0%</span><span class="diff-badge neg">+2.6 pts</span></div>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary">
+    <div class="summary-card owed">
+      <div class="s-label">Amount Due Now</div>
+      <div class="s-val">$105,498</div>
+      <div class="s-sub">Balance owed for tax year 2025</div>
+    </div>
+    <div class="summary-card rate">
+      <div class="s-label">Effective Tax Rate</div>
+      <div class="s-val">32.6%</div>
+      <div class="s-sub">Up from 30.0% in 2024 (+2.6 pts)</div>
+    </div>
+    <div class="summary-card est">
+      <div class="s-label">Total Tax Liability</div>
+      <div class="s-val">$514,595</div>
+      <div class="s-sub">Up $161,710 from 2024</div>
+    </div>
+  </div>
+
+  <!-- WHY YOU OWE -->
+  <div class="why-section">
+    <div class="why-eyebrow">Analysis</div>
+    <h2 class="why-title">Why You Owe $105,498</h2>
+    <p class="why-intro">Your income grew by <strong>$418,619</strong> in 2025, but your withholding and estimated payments only increased by <strong>$36,523</strong> — covering less than 9 cents of every new dollar earned. At a 32% marginal rate, that gap is expensive.</p>
+
+    <!-- THE GAP VISUAL -->
+    <div class="gap-visual">
+
+      <!-- LEFT: Income grew -->
+      <div class="gap-col">
+        <div class="gap-col-label">Income Increase</div>
+        <div class="gap-bar-wrap">
+          <div class="gap-bar income-bar">
+            <span class="gap-bar-amount">+$418,619</span>
+            <span class="gap-bar-tag">New income in 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIDDLE: Arrow + equation -->
+      <div class="gap-middle">
+        <div class="gap-rate-box">
+          <div class="gap-rate-label">Marginal Rate</div>
+          <div class="gap-rate-val">32%</div>
+        </div>
+        <div class="gap-arrow">×</div>
+        <div class="gap-result-label">Expected additional<br>tax owed</div>
+        <div class="gap-result-val">~$134,000</div>
+      </div>
+
+      <!-- RIGHT: What was covered vs. gap -->
+      <div class="gap-col">
+        <div class="gap-col-label">Additional Payments Made</div>
+        <div class="gap-bar-wrap">
+          <div class="gap-bar payments-bar">
+            <span class="gap-bar-amount">+$36,523</span>
+            <span class="gap-bar-tag">Additional withholding &amp; estimates</span>
+          </div>
+          <div class="gap-bar shortfall-bar">
+            <span class="gap-bar-amount">−$105,498</span>
+            <span class="gap-bar-tag">Shortfall → balance due</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM EXPLAINER TILES -->
+    <div class="why-tiles">
+      <div class="why-tile">
+        <div class="why-tile-icon">📈</div>
+        <div class="why-tile-head">Income jumped $418K</div>
+        <div class="why-tile-body">Pass-through income from partnerships and S-Corps rose by $300K. Wages also grew $154K. Total income crossed $1.7M.</div>
+      </div>
+      <div class="why-tile">
+        <div class="why-tile-icon">💸</div>
+        <div class="why-tile-head">Payments only rose $36K</div>
+        <div class="why-tile-body">Withholding increased $30K and estimated payments increased $5K — covering just 8.7% of the additional income earned.</div>
+      </div>
+      <div class="why-tile">
+        <div class="why-tile-icon">📐</div>
+        <div class="why-tile-head">32% marginal rate applied</div>
+        <div class="why-tile-body">Every additional dollar of income was taxed near the top federal bracket. The underpaid portion accumulated into a $105K balance due.</div>
+      </div>
+      <div class="why-tile highlight-tile">
+        <div class="why-tile-icon">🎯</div>
+        <div class="why-tile-head">The fix: adjust 2026 estimates</div>
+        <div class="why-tile-body">Quarterly payments of <strong>$91,486</strong> have been set to match your projected 2026 liability. Paying on time avoids penalties.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <svg width="22" height="24" viewBox="0 0 80 90" fill="none">
+        <path d="M40 4L8 18V46C8 63 22 78 40 86C58 78 72 63 72 46V18L40 4Z" stroke="#CAA977" stroke-width="4" fill="none"/>
+        <path d="M40 16L18 26V46C18 58 27 69 40 76C53 69 62 58 62 46V26L40 16Z" stroke="#CAA977" stroke-width="3" fill="none" opacity="0.55"/>
+      </svg>
+      <span class="brand-name">Centurion</span>
+    </div>
+    <p>2025 Federal Income Tax Summary &mdash; Estimates Version &mdash; Confidential &mdash; For Client Use Only</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggle(header) {
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    header.nextElementSibling.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
