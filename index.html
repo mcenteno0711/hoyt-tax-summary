@@ -6,6 +6,110 @@
 <title>2025 Federal Tax Summary — Hoyt | Centurion</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
+  #gate {
+    position: fixed;
+    inset: 0;
+    background: #0B2038;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    background-image: radial-gradient(ellipse at 70% 10%, rgba(48,110,158,0.2) 0%, transparent 60%);
+  }
+  #gate-box {
+    background: #0e2844;
+    border: 1px solid #1a3a5c;
+    border-top: 3px solid #CAA977;
+    border-radius: 6px;
+    padding: 40px 44px;
+    text-align: center;
+    width: 340px;
+  }
+  #gate svg { margin-bottom: 16px; }
+  #gate-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #CAA977;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  #gate-sub {
+    font-family: 'Barlow', sans-serif;
+    font-size: 11px;
+    color: #536f8a;
+    margin-bottom: 24px;
+  }
+  #gate-input {
+    width: 100%;
+    background: #0B2038;
+    border: 1px solid #1a3a5c;
+    border-radius: 4px;
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.25em;
+    text-align: center;
+    padding: 10px 14px;
+    outline: none;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  #gate-input:focus { border-color: #CAA977; }
+  #gate-input.error { border-color: #e07070; animation: shake 0.3s; }
+  #gate-btn {
+    width: 100%;
+    background: #CAA977;
+    color: #0B2038;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 11px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #gate-btn:hover { background: #d4b98a; }
+  #gate-err {
+    margin-top: 10px;
+    font-size: 11px;
+    color: #e07070;
+    font-family: 'Barlow', sans-serif;
+    min-height: 16px;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  body.locked { overflow: hidden; }
+</style>
+<script>
+  function checkPassword() {
+    const input = document.getElementById('gate-input');
+    const err = document.getElementById('gate-err');
+    if (input.value.trim() === '5196') {
+      document.getElementById('gate').style.display = 'none';
+      document.body.classList.remove('locked');
+    } else {
+      input.classList.add('error');
+      err.textContent = 'Incorrect password. Please try again.';
+      input.value = '';
+      setTimeout(() => input.classList.remove('error'), 400);
+    }
+  }
+  window.onload = function() {
+    document.body.classList.add('locked');
+    document.getElementById('gate-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+  }
+</script>
+<style>
   :root {
     --midnight: #0B2038;
     --ocean: #306E9E;
@@ -482,6 +586,21 @@
 </style>
 </head>
 <body>
+
+<div id="gate">
+  <div id="gate-box">
+    <svg width="40" height="44" viewBox="0 0 80 90" fill="none">
+      <path d="M40 4L8 18V46C8 63 22 78 40 86C58 78 72 63 72 46V18L40 4Z" stroke="#CAA977" stroke-width="3.5" fill="none"/>
+      <path d="M40 14L16 25V46C16 59 26 71 40 78C54 71 64 59 64 46V25L40 14Z" stroke="#CAA977" stroke-width="2.5" fill="none" opacity="0.6"/>
+      <path d="M29 40 Q29 32 40 32 Q51 32 51 40 L51 52 Q51 55 48 55 L45 55 L45 48 Q45 44 40 44 Q35 44 35 48 L35 55 L32 55 Q29 55 29 52 Z" fill="#CAA977" opacity="0.9"/>
+    </svg>
+    <div id="gate-title">Centurion</div>
+    <div id="gate-sub">Enter your access code to view this document</div>
+    <input id="gate-input" type="password" placeholder="· · · ·" maxlength="20" />
+    <button id="gate-btn" onclick="checkPassword()">Access Report</button>
+    <div id="gate-err"></div>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="brand">
